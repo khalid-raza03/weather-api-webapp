@@ -23,7 +23,7 @@ A simple web application that fetches and displays weather information for any c
    ```bash
    cd weather-webapp
    ```
-3. Get your API key from [Weatherapi](https://api.weatherapi.com)
+3. Get your API key from [Weatherapi](https://www.weatherapi.com/)
 4. Add your API key to the JavaScript file
 5. Open `index.html` in your browser
 
