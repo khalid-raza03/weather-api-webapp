@@ -64,6 +64,7 @@ function loadSavedCities() {
   JSON.parse(localStorage.getItem('weatherCities') || '[]').forEach(displayWeather);
 }
 
+// refresh func
 async function refreshCity(name, btn) {
   toggleButton(btn, true, '⏳');
   try {
@@ -88,6 +89,7 @@ function toggleButton(btn, disabled, text) {
   btn.textContent = text;
 }
 
+// delete functionality
 function deleteCity(name, btn) {
     // Remove from localStorage
     const cities = JSON.parse(localStorage.getItem('weatherCities') || '[]');
