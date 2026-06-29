@@ -1,16 +1,24 @@
 # Weather API WebApp
 
-A simple web application that fetches and displays weather information for any city using the OpenWeatherMap API.
+An interactivr live web application that fetches and displays weather information for any city using the weatherapi API.
 
-## Features
-- Fetches current weather data for a given city
-- Displays temperature, humidity, and weather conditions
-- User-friendly interface with search functionality
-- Responsive design
+## ✨ Features
+
+- 🌍 Search and fetch real-time weather data for any city worldwide
+- 🌡️ Displays current temperature, weather conditions, and rain probability
+- 🕒 Shows the last live weather update time
+- 📋 Save and manage multiple city weather cards
+- 🔄 Refresh individual weather cards with the latest weather data
+- 🗑️ Remove saved cities with a single click
+- 🔍 Instant search through saved weather cards with debounced filtering
+- 💾 Automatically stores saved cities using Local Storage
+- 📱 Fully responsive and modern glassmorphism UI
+- ⚡ Fast and lightweight application powered by the WeatherAPI
 
 ## Technologies Used
-- HTML
-- CSS
+- HTML5
+- CSS3
+- Tailwind Css
 - JavaScript
 - weatherapi API
 
