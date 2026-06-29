@@ -1,40 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather Webapp</title>
+        <script src="./tailwind.config.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+            rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./styles.css">
+    </head>
 
+    <body class="bg-gray-900 text-white min-h-screen">
 
-<body>
+        <div class="main-wrapper bg-main min-h-screen w-full flex flex-col">
 
-    <div class="main-wrapper bg-primary-subtle">
-        <div class="container py-5">
-
-            <h1 class="pb-3 fs-2 fw-bold text-primary text-center border-bottom border-primary">Weather App</h1>
-            <div class="mt-5 d-flex gap-2 justify-content-center align-items-center">
-                <input type="text" id="cityInput"
-                    class="form-control px-4 py-3 rounded text-primary fw-bold flex-grow-1 text3"
-                    placeholder="Enter Your city names">
-
-                <button id="getWeatherBtn" class="flex-shrink-0 btn btn-primary py-3 fw-bold search-btn text3">Search
-                    Weather</button>
+            <div id="goToTop"
+                class="hidden go-to-top fixed bottom-[5%] right-[5%] z-50">
+                <a href="#" rel="noopener noreferrer">
+                    <span
+                        class="material-symbols-outlined cursor-pointer text-4xl hover:scale-90 transition-all duration-300">
+                        arrow_circle_up
+                    </span>
+                </a>
             </div>
 
-            <div id="weatherDetail" class="mt-4 row g-3 min-vh-100">
-                <div class="text-center text-primary mt-2">
-                    <h3 class="text3">Add Your Cities Weather Here</h3>
+            <!-- preloader screen -->
+            <div id="preloader"
+                class="fixed inset-0 z-50 opacity-100 pointer-events-none flex flex-col items-center justify-center min-h-screen bg-blue-900 transition-opacity duration-500">
+                <div class="flex gap-2 items-cennter">
+
+                    <span
+                        class="inline-flex items-center  justify-center w-8 h-8 bg-white rounded-full animate-bounce p-2"><span
+                            class="material-symbols-outlined text-black text-3xl">
+                            cloud
+                        </span></span>
+
+                    <span
+                        class="sm:text-base text-xl font-bold text-white">Loading..</span>
+                </div>
+            </div>
+
+            <div id="main"
+                class="container opacity-0  mx-auto px-4 py-12 max-w-6xl flex-grow">
+
+                <header>
+                    <div class="nav flex items-center justify-center gap-8">
+                        <h1
+                            class="pb-4 text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-200 text-center border-b border-white/10 tracking-tight ">
+                            Weather App</h1>
+
+                        <button onclick="changeTheme()"
+                            class="px-3 py-2 bg-white/30 backdrop-blur-md border border-white rounded-full overflow-hidden "><span
+                                id="darkIcon"
+                                class="material-symbols-outlined light hidden transform  transition-all duration-300 ">dark_mode</span>
+                            <span id="lightIcon"
+                                class="material-symbols-outlined dark transform  transition-all duration-300 ">
+                                sunny
+                            </span>
+                        </button>
+                    </div>
+
+                </header>
+
+                <div
+                    class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center max-w-xl mx-auto">
+                    <input type="text" id="cityInput"
+                        class="w-full city-input px-5 py-4  rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white  font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                        placeholder="Enter city names  |  Search selected cities">
+
+                    <button id="getWeatherBtn"
+                        class="w-full sm:w-auto flex-shrink-0 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white px-8 py-3.5 font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">Show
+                        Weather</button>
+                </div>
+
+                <div
+                    class="flex justify-start gap-8 text-center text-black mt-12 w-full">
+                  <div data-dropdown class="relative inline-block group">
+    <button class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-[172px] transition-all duration-200 cursor-pointer">
+        <span data-title>Sort By</span>
+        <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+
+    <div class="absolute left-0 top-full mt-1 w-full bg-white/50 backdrop-blur-lg rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-200/50">
+        <a href="#" data-option data-sort="name" 
+           class="block px-4 py-3 text-sm text-black    rounded-t-lg transition-all ease-in-out hover:bg-blue-400 hover:font-bold duration-300 no-underline">
+            📋 Name (A-Z)
+        </a>
+        <a href="#" data-option data-sort="temp" 
+           class="block px-4 py-3 text-sm text-black transition-all ease-in-out hover:bg-blue-400 hover:font-bold duration-300 no-underline">
+            🌡️ Temperature
+        </a>
+        <a href="#" data-option data-sort="rain" 
+           class="block px-4 py-3 text-sm text-black  rounded-b-lg transition-all ease-in-out hover:bg-blue-400 hover:font-bold duration-300">
+            🌧️ Raining %
+        </a>
+    </div>
+</div>
+
+                    <div data-dropdown class="relative inline-block group">
+                        <!-- Trigger -->
+                        <button
+                            class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg w-[150px]">
+                            <span data-title id="selectedOption2">Filter
+                                By</span>
+                            <svg
+                                class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"
+                                fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7">
+                                </path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute left-0 top-full mt-1 w-auto  py-2 bg-white/50 backdrop-blur-lg rounded-lg shadow-lg border opacity-0 invisible translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50">
+
+                            <a href="#" data-option
+                                class="inline-flex justify-center items-center px-4 py-2 w-full sm:text-sm px-3 text-xs hover:bg-gray-300 transition">
+                                Temperature
+                            </a>
+
+                            <a href="#" data-option
+                                class="inline-flex justify-center items-center px-4 py-2 w-full sm:text-sm px-3 text-xs hover:bg-gray-300 transition">
+                                Weather
+                            </a>
+
+                            <a href="#" data-option
+                                class="inline-flex justify-center items-center px-4 py-2 w-full sm:text-sm px-3 text-xs hover:bg-gray-300 transition">
+                                Country
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="weatherDetail"
+                    class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="flex justify-center text-center text-black mt-12 col-span-full">
+                        <h3 id="fallbackTxt"
+                            class="font-medium bg-white/50 backdrop-blur-xl w-fit py-3 px-6 rounded-xl tracking-wide sm:text-base text-sm">
+                            Search and Add Your Cities Weather Here</h3>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./script.js"></script>
-</body>
+        <script src="./script.js"></script>
+    </body>
 
 </html>
